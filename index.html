@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing speed</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- external stylesheet  -->
+    <link rel="stylesheet" href="help.css">
+
+</head>
+
+<body>
+    <div class="main">
+        <div class="center">
+            <h1>Welcome chek your Typing speed :)</h1>
+            <h2 id="msg"></h2>
+            <textarea id="myword" cols="100" rows="10" placeholder="Remamber, be nice!"></textarea>
+            <br>
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+    <script>
+        const setOfWords = [
+            "If you want to download and host Bootstrap 4 yourself, go to getbootstrap.com, and follow the instructions there.",
+            "Bootstrap 4 uses HTML elements and CSS properties that require the HTML5 doctype.",
+            "Always include the HTML5 doctype at the beginning of the page, along with the lang attribute and the correct character set:",
+            "Bootstrap 4 also requires a containing element to wrap site contents.",
+            "The following example shows the code for a basic Bootstrap 4 page (with a responsive fixed width container):"
+        ];
+        const msg = document.getElementById('msg');
+        const typeWord = document.getElementById('myword');
+        const btn = document.getElementById('btn');
+        let startTime, endTime;
+        const playGame = () => {
+            let randomNumber = Math.floor(Math.random() * setOfWords.length);
+            msg.innerText = setOfWords[randomNumber];
+            let date = new Date();
+            startTime = date.getTime();
+            btn.innerText = "Done";
+        }
+        const endplay = () => {
+            let date = new Date();
+            endTime = date.getTime();
+            let totalTime = ((endTime - startTime) / 1000);
+            console.log(totalTime);
+
+            let totalStr = typeWord.value;
+            let wordCount = wordCounter(totalStr);
+            let speed = Math.round((wordCount / totalTime) * 60);
+
+            let finalMsg = "You typed total at " + speed + "word per minutes";
+            finalMsg += compareWord(msg.innerText, totalStr);
+            msg.innerText = finalMsg;
+        }
+        const compareWord = (Str1, Str2) => {
+            let words1 = Str1.split(" ");
+            let words2 = Str2.split(" ");
+            let cnt = 0;
+
+            words1.forEach(function (item, index) {
+                if (item == words2[index]) {
+                    cnt++;
+                }
+            })
+            let errorWords = (words1.length - cnt);
+            return (cnt + "correct out of" + words1.length + "words and the total number of eror are" + errorWords +
+                ".");
+
+        }
+
+        const wordCounter = (Str) => {
+            let response = Str.split(" ").length;
+            console.log(response);
+            return response;
+        }
+        btn.addEventListener('click', function () {
+            if (this.innerText == 'Start') {
+                typeWord.disabled = false;
+                playGame();
+            } else if (this.innerText == 'Done') {
+                typeWord.disabled = true;
+                btn.innerText = "Start";
+                endplay();
+            }
+        })
+    </script>
+</body>
+
+</html>
